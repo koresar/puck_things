@@ -5,6 +5,12 @@ function turnLedsOff() {
   colors.BLUE.reset();
 }
 
+function blink(delay, LED) {
+  LED = LED || colors.GREEN;
+  LED.set();
+  setTimeout(LED.reset.bind(LED), delay);
+}
+
 var intervalId, state = 0, isBlinking = false;
 function stopBlinking(LED) {
   if (!isBlinking) return;
@@ -40,8 +46,11 @@ function checkTemperature() {
 }
 var monitoringId, isMonitoring;
 function startMonitoring() {
+  blink(100);
+  if (isMonitoring) return;
   isMonitoring = true;
   monitoringId = setInterval(checkTemperature, 5000);
+  checkTemperature();
 }
 function stopMonitoring() {
   clearInterval(monitoringId);
@@ -51,7 +60,6 @@ function stopMonitoring() {
 }
 
 turnLedsOff();
-checkTemperature();
 startMonitoring();
 setDeepSleep(true);
 
