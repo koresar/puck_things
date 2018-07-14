@@ -23,8 +23,13 @@ function draw(temp, bat) {
   const now = Date.now();
 
   g.clear();
+  
   // Use the small font for a title
   g.setFontBitmap();
+  
+  drawArrow3();
+  drawArrow4();
+  
   if (temp && bat) {
     g.drawString(`Sensor Battery: ${bat || lastBat}`);
 
@@ -42,18 +47,19 @@ function draw(temp, bat) {
   var x = (g.getWidth() - g.stringWidth(t)) / 2;
   g.drawString(t, x, 10);
   
-  drawArrow3();
-  drawArrow4();
-  
   // Update the screen
   g.flip();
 }
 function drawArrow4() {
+  g.drawString("Light", 7, 58);
   g.drawLine(0,60,5,60);
   g.drawLine(0,60,3,57);
   g.drawLine(0,60,3,63);
 }
 function drawArrow3() {
+  const s = "Rescan";
+  const x = g.getWidth() - g.stringWidth(s) - 6;
+  g.drawString(s, x, 58);
   g.drawLine(127,60,122,60);
   g.drawLine(127,60,124,57);
   g.drawLine(127,60,124,63);
