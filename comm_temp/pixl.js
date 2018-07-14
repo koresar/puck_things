@@ -26,7 +26,7 @@ function draw(temp, bat) {
   // Use the small font for a title
   g.setFontBitmap();
   if (temp && bat) {
-    g.drawString(`Battery: ${bat || lastBat}`);
+    g.drawString(`Sensor Battery: ${bat || lastBat}`);
 
     lastTemp = temp;
     lastBat = bat;
@@ -41,9 +41,22 @@ function draw(temp, bat) {
   g.setFontVector(40);
   var x = (g.getWidth() - g.stringWidth(t)) / 2;
   g.drawString(t, x, 10);
-
+  
+  drawArrow3();
+  drawArrow4();
+  
   // Update the screen
   g.flip();
+}
+function drawArrow4() {
+  g.drawLine(0,60,5,60);
+  g.drawLine(0,60,3,57);
+  g.drawLine(0,60,3,63);
+}
+function drawArrow3() {
+  g.drawLine(127,60,122,60);
+  g.drawLine(127,60,124,57);
+  g.drawLine(127,60,124,63);
 }
 
 function scanForDevices() {
@@ -58,6 +71,12 @@ function scanForDevices() {
     draw(n + f, d.getUint8(0));
   }, 1000); // scan for 1 sec
 }
+
+setWatch(function() {
+  LED.toggle();
+}, BTN4, {edge:"rising", debounce:50, repeat:true});
+
+setWatch(scanForDevices, BTN3, {edge:"rising", debounce:50, repeat:true});
 
 setInterval(scanForDevices, 6000);
 scanForDevices();
