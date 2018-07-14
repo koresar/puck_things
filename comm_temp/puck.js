@@ -21,9 +21,14 @@ class Temperatures {
   }
 }
 
+const OFFSET = 3.5;
+function readTemp() {
+    return E.getTemperature() + OFFSET;
+}
+
 var lastTemps = new Temperatures();
 function updateBT() {
-  const t = lastTemps.push(E.getTemperature());
+  const t = lastTemps.push(readTemp());
   const n = Math.floor(t);
   const f = Math.round((t - n) * 100);
   //console.log(t, n, f);
