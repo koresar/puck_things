@@ -7,7 +7,7 @@ function secToStr(sec) {
   var str = sec + " sec";
   if (sec > 60) {
     const min = Math.round(sec / 60);
-    str = sec + " min";
+    str = min + " min";
     if (min > 60) {
       const hour = Math.round(min / 60);
       str = hour + " hour";
