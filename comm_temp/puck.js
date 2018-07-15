@@ -5,7 +5,7 @@ class Temperatures {
     this._pos = 0;
     this._sum = 0;
   }
-  
+
   push(t) {
     if (this.temps.length < this.max) {
       this.temps.push(t);
@@ -16,14 +16,14 @@ class Temperatures {
       this.temps[this._pos] = t;
       this._pos = (this._pos+1) % this.max;
     }
-    
+
     return this._sum / this.temps.length;
   }
 }
 
 const OFFSET = 3.5;
 function readTemp() {
-    return E.getTemperature() + OFFSET;
+  return E.getTemperature() + OFFSET;
 }
 
 var lastTemps = new Temperatures();
@@ -34,9 +34,22 @@ function updateBT() {
   //console.log(t, n, f);
   NRF.setAdvertising({}, {
     manufacturer: 0x590,
-    manufacturerData: [Puck.getBatteryPercentage(), n, f]
+    manufacturerData: [
+      Math.round(Puck.light()),
+      Puck.getBatteryPercentage(),
+      n,
+      f
+    ]
   });
 }
 
 setInterval(updateBT, 3000);
 updateBT();
+
+setWatch(function() {
+  LED.toggle();
+  NRF.setAdvertising({}, {
+    manufacturer: 0x590,
+    manufacturerData: ['l'.charCodeAt(0)]
+  });
+}, BTN, {edge:"rising", debounce:50, repeat:true});

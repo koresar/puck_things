@@ -23,13 +23,13 @@ function draw(temp, bat) {
   const now = Date.now();
 
   g.clear();
-  
+
   // Use the small font for a title
   g.setFontBitmap();
-  
+
   drawArrow3();
   drawArrow4();
-  
+
   if (temp && bat) {
     g.drawString(`Sensor Battery: ${bat || lastBat}`);
 
@@ -46,10 +46,11 @@ function draw(temp, bat) {
   g.setFontVector(40);
   var x = (g.getWidth() - g.stringWidth(t)) / 2;
   g.drawString(t, x, 10);
-  
+
   // Update the screen
   g.flip();
 }
+
 function drawArrow4() {
   g.drawString("Light", 7, 58);
   g.drawLine(0,60,5,60);
@@ -71,10 +72,17 @@ function scanForDevices() {
 
     if (!dev) return draw();
     var d = new DataView(dev.manufacturerData);
-    const n = d.getInt8(1);
-    const f = d.getInt8(2)/100.0;
+
+    const isItLight = d.getUint8(0);
+    if (isItLight) LED.reset();
+    else LED.set();
+
+    const bat = d.getUint8(1);
+    const n = d.getInt8(2);
+    const f = d.getInt8(3)/100.0;
+    const temp = n + f;
     //console.log(n, f);
-    draw(n + f, d.getUint8(0));
+    draw(temp, bat);
   }, 1000); // scan for 1 sec
 }
 
