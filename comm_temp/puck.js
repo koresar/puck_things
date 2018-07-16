@@ -45,11 +45,3 @@ function updateBT() {
 
 setInterval(updateBT, 3000);
 updateBT();
-
-setWatch(function() {
-  LED.toggle();
-  NRF.setAdvertising({}, {
-    manufacturer: 0x590,
-    manufacturerData: ['l'.charCodeAt(0)]
-  });
-}, BTN, {edge:"rising", debounce:50, repeat:true});
