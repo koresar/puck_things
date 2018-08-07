@@ -9,7 +9,7 @@ setWatch(function (e) {
     setTimeout(function () {
       controls.mute();
       digitalPulse(LED3, 1, 100);
-    }, 25000);
+    }, 55000);
   } else if (len > 0.3) {
     controls.next();
     digitalPulse(LED1, 1, 100);
